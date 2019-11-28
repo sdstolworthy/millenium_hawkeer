@@ -51,7 +51,7 @@ const watchPage = async pageUrl => {
     );
     if (finalPrice < lastLowestPrice) {
       console.warn(`LOW PRICE ${finalPrice}`);
-      sendMessageToDestinations(`Milennium Falcon Price $${finalPrice}`);
+      sendMessageToDestinations(`New low price ${pageUrl}`);
     }
     lastLowestPrice = finalPrice;
   } catch (e) {
