@@ -13,9 +13,7 @@ const FETCH_INTERVAL = 20000; // 20 seconds
 
 const twilio = new Twilio(process.env.TWILIO_SID, process.env.TWILIO_KEY);
 
-const amazonPagesToWatch = [
-  "https://www.amazon.com/LEGO-Ultimate-Millennium-Falcon-Building/dp/B075SDMMMV"
-];
+const amazonPagesToWatch = process.env.AMAZON_PAGES.split(" ");
 
 const watchPage = async pageUrl => {
   try {
