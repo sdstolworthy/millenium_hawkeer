@@ -9,12 +9,14 @@ require("dotenv").config();
 const destinationNumbers = process.env.TO_NUMBERS.split(" ");
 
 const FROM_NUMBER = process.env.FROM_NUMBER;
+
 const FETCH_INTERVAL = 20000; // 20 seconds
 
 const twilio = new Twilio(process.env.TWILIO_SID, process.env.TWILIO_KEY);
 
 const amazonPagesToWatch = process.env.AMAZON_PAGES.split(" ");
 
+let lastLowestPrice = Infinity;
 const watchPage = async pageUrl => {
   try {
     const { data: falconPage } = await axios.get(pageUrl);
@@ -47,10 +49,11 @@ const watchPage = async pageUrl => {
       typeof parsedPrice == "number" ? parsedPrice : 999999,
       typeof parsedDealPrice == "number" ? parsedDealPrice : 999999
     );
-    if (finalPrice < 799) {
+    if (finalPrice < lastLowestPrice) {
       console.warn(`LOW PRICE ${finalPrice}`);
       sendMessageToDestinations(`Milennium Falcon Price $${finalPrice}`);
     }
+    lastLowestPrice = finalPrice;
   } catch (e) {
     console.log("error while fetching page", e);
   }
